@@ -1,31 +1,31 @@
 import { fileURLToPath } from "url";
 import path from "path";
+import { stdin as input, stdout as output } from "process";
+import readline from "node:readline/promises";
 
-const cliStarter = async () => {
+const cliStarter = () => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
-  const { stdin, stdout } = process;
+  const rl = readline.createInterface(input, output);
   let username = process.env.npm_config_username;
 
   if (username === undefined) {
     username = "Stranger";
   }
 
-  stdout.write(`Welcome to the File Manager, ${username}!\n`);
-  stdout.write(`You are currently in ${__dirname}\n`);
-
-  stdin.on("data", (data) => {
-    const input = data.toString().trim();
-    if (input === ".exit") {
-      process.exit();
+  rl.write(`Welcome to the File Manager, ${username}!\n`);
+  rl.write(`You are currently in ${__dirname}\n`);
+  rl.setPrompt("Enter a command: ");
+  rl.prompt();
+  rl.on("line", (input) => {
+    const trimmedInput = input.toString().trim();
+    if (trimmedInput === ".exit") {
+      rl.close();
     }
-    stdout.write(data);
   });
 
-  process.on("SIGINT", () => process.exit());
-
-  process.on("exit", () => {
-    stdout.write(`Thank you for using File Manager, ${username}, goodbye!\n`);
+  rl.on("close", () => {
+    output.write(`\nThank you for using File Manager, ${username}, goodbye!\n`);
   });
 };
 
