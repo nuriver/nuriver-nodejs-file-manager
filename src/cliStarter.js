@@ -2,6 +2,7 @@ import { fileURLToPath } from "url";
 import path from "path";
 import { stdin as input, stdout as output } from "process";
 import readline from "node:readline/promises";
+import { moveToDir } from "./moveToDir.js";
 
 const cliStarter = () => {
   const __filename = fileURLToPath(import.meta.url);
@@ -25,13 +26,20 @@ const cliStarter = () => {
       rl.close();
       return;
     }
+    const [command, ...args] = trimmedInput.split(" ");
 
-    switch (trimmedInput) {
+    switch (command) {
       case "up":
         currentDir = path.resolve(currentDir, "..");
+        process.chdir(currentDir);
         break;
-      case "test":
-        console.log("Test command was entered");
+      case "cd":
+        if (args.length > 0) {
+          const newPath = path.resolve(currentDir, args.join(" "));
+          currentDir = moveToDir(currentDir, newPath);
+        } else {
+          console.log("Invalid input");
+        }
         break;
       default:
         console.log("Invalid input");
