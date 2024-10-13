@@ -4,6 +4,8 @@ import readline from "node:readline/promises";
 import { moveToDir } from "./moveToDir.js";
 import { printDirContent } from "./printDirContent.js";
 import { readFile } from "./readFile.js";
+import { createFile } from "./createFile.js";
+import { renameFile } from "./renameFile.js";
 
 const cliStarter = async () => {
   let currentDir = process.cwd();
@@ -68,6 +70,31 @@ const cliStarter = async () => {
           console.log("Invalid input");
         }
         break;
+      case "add":
+        if (args.length === 1) {
+          const fileName = args.join(" ");
+          try {
+            await createFile(fileName);
+          } catch {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
+        break;
+      case "rn":
+        if (args.length === 2) {
+          const pathToFile = args[0];
+          const newName = args[1];
+          try {
+            await renameFile(pathToFile, newName);
+          } catch {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
+        break;
       default:
         console.log("Invalid input");
         break;
@@ -76,6 +103,7 @@ const cliStarter = async () => {
     console.log(`You are currently in ${currentDir}`);
     rl.prompt();
   });
+  
   rl.on("close", () => {
     output.write(`\nThank you for using File Manager, ${username}, goodbye!\n`);
   });
