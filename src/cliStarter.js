@@ -8,6 +8,7 @@ import { createFile } from "./createFile.js";
 import { renameFile } from "./renameFile.js";
 import { copyFile } from "./copyFile.js";
 import { deleteFile } from "./deleteFile.js";
+import { printOSInfo } from "./printOSInfo.js";
 
 const cliStarter = async () => {
   let currentDir = process.cwd();
@@ -128,8 +129,19 @@ const cliStarter = async () => {
         if (args.length === 1) {
           const filePath = args.join(" ");
           try {
-           await deleteFile(filePath);
-          } catch(err) {
+            await deleteFile(filePath);
+          } catch (err) {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
+        break;
+      case "os":
+        if (args.length === 1) {
+          try {
+            await printOSInfo(args.join(" "));
+          } catch {
             console.log("Operation failed");
           }
         } else {
