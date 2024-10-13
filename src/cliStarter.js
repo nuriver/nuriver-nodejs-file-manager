@@ -1,14 +1,12 @@
-import { fileURLToPath } from "url";
 import path from "path";
 import { stdin as input, stdout as output } from "process";
 import readline from "node:readline/promises";
 import { moveToDir } from "./moveToDir.js";
 import { printDirContent } from "./printDirContent.js";
+import { readFile } from "./readFile.js";
 
 const cliStarter = async () => {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  let currentDir = __dirname;
+  let currentDir = process.cwd();
   const rl = readline.createInterface(input, output);
   let username = process.env.npm_config_username;
 
@@ -39,7 +37,7 @@ const cliStarter = async () => {
         }
         break;
       case "cd":
-        if (args.length > 0) {
+        if (args.length === 1) {
           const newPath = path.resolve(currentDir, args.join(" "));
           currentDir = moveToDir(currentDir, newPath);
         } else {
@@ -56,7 +54,19 @@ const cliStarter = async () => {
           } catch (err) {
             console.log("Operation failed");
           }
-        } 
+        }
+        break;
+      case "cat":
+        if (args.length === 1) {
+          const filePath = args.join(" ");
+          try {
+            await readFile(filePath);
+          } catch (err) {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
         break;
       default:
         console.log("Invalid input");
