@@ -3,8 +3,9 @@ import path from "path";
 import { stdin as input, stdout as output } from "process";
 import readline from "node:readline/promises";
 import { moveToDir } from "./moveToDir.js";
+import { printDirContent } from "./printDirContent.js";
 
-const cliStarter = () => {
+const cliStarter = async () => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
   let currentDir = __dirname;
@@ -19,7 +20,7 @@ const cliStarter = () => {
   rl.write(`You are currently in ${currentDir}\n`);
   rl.setPrompt("Enter a command: ");
   rl.prompt();
-  rl.on("line", (input) => {
+  rl.on("line", async (input) => {
     const trimmedInput = input.toString().trim();
 
     if (trimmedInput === ".exit") {
@@ -30,8 +31,12 @@ const cliStarter = () => {
 
     switch (command) {
       case "up":
-        currentDir = path.resolve(currentDir, "..");
-        process.chdir(currentDir);
+        if (args.length > 0) {
+          console.log("Invalid input");
+        } else {
+          currentDir = path.resolve(currentDir, "..");
+          process.chdir(currentDir);
+        }
         break;
       case "cd":
         if (args.length > 0) {
@@ -40,6 +45,18 @@ const cliStarter = () => {
         } else {
           console.log("Invalid input");
         }
+        break;
+      case "ls":
+        if (args.length > 0) {
+          console.log("Invalid input");
+        } else {
+          try {
+            const dirContent = await printDirContent(currentDir);
+            console.table(dirContent);
+          } catch (err) {
+            console.log("Operation failed");
+          }
+        } 
         break;
       default:
         console.log("Invalid input");
