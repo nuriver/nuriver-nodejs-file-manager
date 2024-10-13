@@ -7,6 +7,7 @@ import { readFile } from "./readFile.js";
 import { createFile } from "./createFile.js";
 import { renameFile } from "./renameFile.js";
 import { copyFile } from "./copyFile.js";
+import { deleteFile } from "./deleteFile.js";
 
 const cliStarter = async () => {
   let currentDir = process.cwd();
@@ -102,6 +103,20 @@ const cliStarter = async () => {
           const destDir = args[1];
           try {
             await copyFile(filePath, destDir);
+          } catch {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
+        break;
+      case "mv":
+        if (args.length === 2) {
+          const filePath = args[0];
+          const destDir = args[1];
+          try {
+            await copyFile(filePath, destDir);
+            deleteFile(filePath);
           } catch {
             console.log("Operation failed");
           }
