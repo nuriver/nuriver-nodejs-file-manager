@@ -124,6 +124,18 @@ const cliStarter = async () => {
           console.log("Invalid input");
         }
         break;
+      case "rm":
+        if (args.length === 1) {
+          const filePath = args.join(" ");
+          try {
+           await deleteFile(filePath);
+          } catch(err) {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
+        break;
       default:
         console.log("Invalid input");
         break;
