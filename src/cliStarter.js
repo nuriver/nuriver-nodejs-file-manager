@@ -11,6 +11,7 @@ import { deleteFile } from "./deleteFile.js";
 import { printOSInfo } from "./printOSInfo.js";
 import { calculateHash } from "./calculateHash.js";
 import { compressFile } from "./compressFile.js";
+import { decompressFile } from "./decompressFile.js";
 
 const cliStarter = async () => {
   let currentDir = process.cwd();
@@ -168,6 +169,19 @@ const cliStarter = async () => {
           const destPath = args[1];
           try {
             await compressFile(filePath, destPath);
+          } catch {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
+        break;
+      case "decompress":
+        if (args.length === 2) {
+          const archivePath = args[0];
+          const destPath = args[1];
+          try {
+            await decompressFile(archivePath, destPath);
           } catch {
             console.log("Operation failed");
           }

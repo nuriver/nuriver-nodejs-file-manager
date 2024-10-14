@@ -5,7 +5,7 @@ import { createGzip } from "zlib";
 import { pipeline } from "stream";
 
 export const compressFile = async (filePath, destPath) => {
-  const fileName = path.basename(filePath, path.extname(filePath));
+  const fileName = path.basename(filePath);
   const archiveName = fileName + ".gz";
   const archivePath = path.join(destPath, archiveName);
 
