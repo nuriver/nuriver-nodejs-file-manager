@@ -9,6 +9,7 @@ import { renameFile } from "./renameFile.js";
 import { copyFile } from "./copyFile.js";
 import { deleteFile } from "./deleteFile.js";
 import { printOSInfo } from "./printOSInfo.js";
+import { calculateHash } from "./calculateHash.js";
 
 const cliStarter = async () => {
   let currentDir = process.cwd();
@@ -141,6 +142,18 @@ const cliStarter = async () => {
         if (args.length === 1) {
           try {
             await printOSInfo(args.join(" "));
+          } catch {
+            console.log("Operation failed");
+          }
+        } else {
+          console.log("Invalid input");
+        }
+        break;
+      case "hash":
+        if (args.length === 1) {
+          const filePath = args.join(" ");
+          try {
+            await calculateHash(filePath);
           } catch {
             console.log("Operation failed");
           }
