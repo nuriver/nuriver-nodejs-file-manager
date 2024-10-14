@@ -3,7 +3,8 @@ import os from "os";
 export const printOSInfo = async (arg) => {
   switch (arg) {
     case "--EOL":
-      console.log(os.EOL);
+    const EOL = os.EOL === '\n' ? '\\n' : '\\r\\n';
+    console.log(`EOL is: ${EOL}`);
       break;
     case "--cpus":
       const cpus = os.cpus();
@@ -17,13 +18,13 @@ export const printOSInfo = async (arg) => {
       console.table(cpuData);
       break;
     case "--homedir":
-      console.log(os.homedir());
+      console.log(`Home directory: ${os.homedir()}`);
       break;
     case "--username":
-      console.log(os.userInfo().username);
+      console.log(`System username: ${os.userInfo().username}`);
       break;
     case "--architecture":
-      console.log(os.arch());
+      console.log(`CPU architecture: ${os.arch()}`);
       break;
     default: 
       throw new Error("Non existing command")

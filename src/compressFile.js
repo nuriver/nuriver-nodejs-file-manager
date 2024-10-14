@@ -16,4 +16,5 @@ export const compressFile = async (filePath, destPath) => {
   const destWritable = fs.createWriteStream(archivePath);
 
   await pipe(sourceReadable, gzip, destWritable);
+  console.log(`File was compressed in ${destPath}`)
 };

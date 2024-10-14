@@ -14,4 +14,5 @@ export const decompressFile = async (archivePath, destPath) => {
   const decompressedFileWritable = fs.createWriteStream(decompressedFilePath);
 
   await pipe(archiveReadable, gunzip, decompressedFileWritable);
+  console.log(`File was decompressed in ${destPath}`);
 };
